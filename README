@@ -1,0 +1,15 @@
+Obviously, there is no code here yet, but there will be soon.
+
+== My Goal ==
+... to provide two dll's that you can reference in your test projects:
+* W3CValidators.dll
+* W3CValidators.NUnit.dll
+
+W3CValidators.dll will contain the classes needed to submit files to the
+validation web service and to parse the responses.
+
+W3CValidators.NUnit.dll will contain custom NUnit constraints to make it easy to
+use the validators from within your unit tests.
+
+== License ==
+I don't know what license to use yet.  This is my first open-source project, so I'm not well-versed in the various options.  I'm guessing that whatever license I choose should be able to play nicely with the NUnit license.
