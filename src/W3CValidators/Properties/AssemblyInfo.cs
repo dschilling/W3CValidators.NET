@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) 2009 Daniel A. Schilling
+
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -10,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Daniel A. Schilling")]
 [assembly: AssemblyProduct("W3CValidators")]
-[assembly: AssemblyCopyright("Copyright © Daniel A. Schilling 2009")]
+[assembly: AssemblyCopyright("Copyright © 2009 Daniel A. Schilling")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

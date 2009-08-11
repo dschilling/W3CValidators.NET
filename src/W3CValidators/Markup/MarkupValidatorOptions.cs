@@ -1,3 +1,5 @@
+// Copyright (c) 2009 Daniel A. Schilling
+
 namespace W3CValidators.Markup
 {
     using System.Text;
