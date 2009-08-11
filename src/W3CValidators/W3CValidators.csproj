@@ -36,6 +36,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Markup\MarkupValidatorAtomicMessage.cs" />
     <Compile Include="Markup\MarkupValidatorClient.cs" />
     <Compile Include="Markup\MarkupValidatorOptions.cs" />
     <Compile Include="Markup\MarkupValidatorResponse.cs" />
