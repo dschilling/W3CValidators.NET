@@ -1,15 +1,28 @@
-Obviously, there is no code here yet, but there will be soon.
+Copyright (c) 2009 Daniel A. Schilling
 
-== My Goal ==
-... to provide two dll's that you can reference in your test projects:
-* W3CValidators.dll
-* W3CValidators.NUnit.dll
-
-W3CValidators.dll will contain the classes needed to submit files to the
-validation web service and to parse the responses.
-
-W3CValidators.NUnit.dll will contain custom NUnit constraints to make it easy to
-use the validators from within your unit tests.
+= W3CValidators.NET =
+This is a .NET library for interacting with the W3C Validators (Markup, CSS, and
+Feed), and for doing so within unit tests.
 
 == License ==
-I don't know what license to use yet.  This is my first open-source project, so I'm not well-versed in the various options.  I'm guessing that whatever license I choose should be able to play nicely with the NUnit license.
+See COPYRIGHT for licensing information.  It's the Simplified BSD License that
+FreeBSD uses.
+
+== Purpose ==
+This .NET library enables you to easily write unit tests that check the validity
+of your web-page markup.  The W3C has created a wonderful tool for doing so, and
+they encourage the development of language specific libraries that interface
+with their API.
+
+== Example ==
+Here's what I'm shooting for:
+
+[Test]
+public void Default_Page_Should_Output_Valid_Markup()
+{
+    Assert.That(new Uri("http://localhost/default.aspx"), IsValid.Markup());
+}
+
+== Links ==
+Project homepage: http://raw-data.org/project/w3c-validator
+W3C Validator API documentation: http://validator.w3.org/docs/api.html
