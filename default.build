@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2009 Daniel A. Schilling -->
 <project name="W3CValidators.NET" default="build">
 
 	<description>.NET library for interacting with the W3C Validators (Markup, CSS, and Feed), and for doing so within unit tests</description>
 
-	<target name="build">
-	</target>
-
+	<target name="build" />
+		
 </project>
