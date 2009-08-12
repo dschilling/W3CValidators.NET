@@ -6,6 +6,7 @@ namespace W3CValidators.Markup
     using System.Collections.Generic;
     using System.Net;
     using System.Web;
+    using System.Xml;
 
     public class MarkupValidatorClient
     {
@@ -18,9 +19,8 @@ namespace W3CValidators.Markup
 
         public MarkupValidatorResponse Check(Uri documentUri, MarkupValidatorOptions options)
         {
-            var queryStrings = options != null
-                ? options.ToDictionary()
-                : new Dictionary<string, string>(1);
+            var queryStrings = (options ?? new MarkupValidatorOptions())
+                .ToDictionary();
             queryStrings.Add("uri", documentUri.ToString());
             var request = WebRequest.Create(AppendQueryString(_validator, queryStrings));
             return ParseResponse(request);
@@ -62,7 +62,9 @@ namespace W3CValidators.Markup
 
         private static MarkupValidatorResponse ParseResponse(WebRequest request)
         {
-            throw new NotImplementedException();
+            using (var response = request.GetResponse())
+            using (var stream = response.GetResponseStream())
+                return new MarkupValidatorResponse(stream);
         }
     }
 }
