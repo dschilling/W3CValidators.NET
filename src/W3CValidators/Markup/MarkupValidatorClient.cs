@@ -8,15 +8,41 @@ namespace W3CValidators.Markup
     using System.Net;
     using System.Web;
 
+    // TODO: throttle down to 1 request per second if pointed at http://validator.w3.org/check
+
+    /// <summary>
+    /// Communicates with a W3C Markup Validator service.
+    /// </summary>
     public class MarkupValidatorClient
     {
         private readonly Uri _validator;
 
+        /// <summary>
+        /// Creates a new MarkupValidatorClient instance pointing at W3C's public validator:
+        /// http://validator.w3.org/check.
+        /// </summary>
+        public MarkupValidatorClient()
+            : this(new Uri("http://validator.w3.org/check"))
+        {}
+
+        /// <summary>
+        /// Creates a new MarkupValidatorClient instance pointing at the specified validator.  See
+        /// http://validator.w3.org/docs/install.html for instructions on installing your own copy
+        /// of the validator.
+        /// </summary>
+        /// <param name="validator">the location of the validator service</param>
         public MarkupValidatorClient(Uri validator)
         {
             _validator = validator;
         }
 
+        /// <summary>
+        /// Asks the validator service to download and validate the document at specified public
+        /// uri.  This is the "uri" method.
+        /// </summary>
+        /// <param name="documentUri">the location of the document to be validated</param>
+        /// <param name="options">configuration options</param>
+        /// <returns>a MarkupValidatorResponse object</returns>
         public MarkupValidatorResponse Check(Uri documentUri, MarkupValidatorOptions options)
         {
             if (options == null)
@@ -29,6 +55,13 @@ namespace W3CValidators.Markup
             return ParseResponse(request);
         }
 
+        /// <summary>
+        /// Uploads a document to the validator service for validation.  This is the
+        /// "uploaded_file" method.
+        /// </summary>
+        /// <param name="documentData">the document to upload</param>
+        /// <param name="options">configuration options</param>
+        /// <returns>a MarkupValidatorResponse object</returns>
         public MarkupValidatorResponse Check(byte[] documentData, MarkupValidatorOptions options)
         {
             if (options == null)
@@ -41,6 +74,13 @@ namespace W3CValidators.Markup
             return ParseResponse(request);
         }
 
+        /// <summary>
+        /// Posts a document to the validator service for validation.  This is the "fragment"
+        /// method.
+        /// </summary>
+        /// <param name="documentFragment">the document to upload</param>
+        /// <param name="options">configuration options</param>
+        /// <returns>a MarkupValidatorResponse object</returns>
         public MarkupValidatorResponse Check(string documentFragment, MarkupValidatorOptions options)
         {
             if (options == null)

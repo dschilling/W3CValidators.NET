@@ -8,13 +8,18 @@ namespace W3CValidators.Markup
     using System.Text;
     using System.Xml;
 
+    // TODO: include <m:Debug> results.
+
+    /// <summary>
+    /// A response from the validator service.
+    /// </summary>
     public class MarkupValidatorResponse
     {
         private readonly XmlNode _root;
         private readonly XmlNamespaceManager _nsmgr;
-        private const string NamespaceAlias = "v";
+        private const string NamespaceAlias = "m";
 
-        public MarkupValidatorResponse(Stream stream)
+        internal MarkupValidatorResponse(Stream stream)
         {
             var doc = new XmlDocument();
             _nsmgr = new XmlNamespaceManager(doc.NameTable);
@@ -23,7 +28,7 @@ namespace W3CValidators.Markup
 
             doc.Load(stream);
 
-            _root = doc.SelectSingleNode("/e:Envelope/e:Body/v:markupvalidationresponse", _nsmgr);
+            _root = doc.SelectSingleNode(string.Format("/e:Envelope/e:Body/{0}:markupvalidationresponse", NamespaceAlias), _nsmgr);
         }
 
         private string this[string name]
@@ -45,21 +50,33 @@ namespace W3CValidators.Markup
             return new Uri(value);
         }
 
+        /// <summary>
+        /// The address of the document validated.
+        /// </summary>
         public Uri Uri
         {
             get { return this.GetUri("uri"); }
         }
 
+        /// <summary>
+        /// Location of the service which provided the validation result.
+        /// </summary>
         public Uri CheckedBy
         {
             get { return this.GetUri("checkedby"); }
         }
 
+        /// <summary>
+        /// Detected (or forced) Document Type for the validated document.
+        /// </summary>
         public string DocType
         {
             get { return this["doctype"]; }
         }
 
+        /// <summary>
+        /// Detected (or forced) Character Encoding for the validated document.
+        /// </summary>
         public Encoding Charset
         {
             get
@@ -71,6 +88,9 @@ namespace W3CValidators.Markup
             }
         }
 
+        /// <summary>
+        /// Whether or not the document validated passed or not formal validation.
+        /// </summary>
         public bool Validity
         {
             get
@@ -82,7 +102,16 @@ namespace W3CValidators.Markup
             }
         }
 
-        public ICollection<MarkupValidatorAtomicMessage> Errors { get { throw new NotImplementedException(); } }
+        // TODO: implement Error and Warning collections.
+
+        /// <summary>
+        /// The list of errors encountered through the validation process.
+        /// </summary>
+        public IList<MarkupValidatorAtomicMessage> Errors { get { throw new NotImplementedException(); } }
+
+        /// <summary>
+        /// The list of warnings encountered through the validation process.
+        /// </summary>
         public ICollection<MarkupValidatorAtomicMessage> Warnings { get { throw new NotImplementedException(); } }
     }
 }

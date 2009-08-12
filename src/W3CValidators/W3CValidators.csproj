@@ -44,6 +44,7 @@
     <Compile Include="Markup\MarkupValidatorClient.cs" />
     <Compile Include="Markup\MarkupValidatorOptions.cs" />
     <Compile Include="Markup\MarkupValidatorResponse.cs" />
+    <Compile Include="Markup\MultipartFormDataWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
