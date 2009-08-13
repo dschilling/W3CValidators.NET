@@ -69,6 +69,12 @@ namespace W3CValidators.Test
         }
 
         [Test]
+        public void Client_Should_Return_Correct_Response_By_Uri_Method_False()
+        {
+            Client_Should_Return_Correct_Response_By_Uri_Method(InvalidXhtmlUrl, false);
+        }
+
+        [Test]
         public void Client_Should_Wait_One_Second_Between_Requests_By_Fragment_Method()
         {
             var document = Encoding.UTF8.GetString(_examples[true]);

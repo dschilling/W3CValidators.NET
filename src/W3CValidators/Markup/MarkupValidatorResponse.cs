@@ -18,16 +18,20 @@ namespace W3CValidators.Markup
         private readonly IList<MarkupValidatorAtomicMessage> _errors;
         private readonly IList<MarkupValidatorAtomicMessage> _warnings;
 
-        internal MarkupValidatorResponse(Stream stream)
+        /// <summary>
+        /// Constructs a new MarkupValidatorResponse to parse the data in the stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        public MarkupValidatorResponse(Stream stream)
             : base(stream)
         {
             _errors = new MarkupValidatorAtomicMessageList(
-                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, "errors"), this.NamespaceManager),
+                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, ":errors"), this.NamespaceManager),
                 this.NamespaceManager,
                 NamespaceAlias,
                 "error");
             _warnings = new MarkupValidatorAtomicMessageList(
-                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, "warnings"), this.NamespaceManager),
+                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, ":warnings"), this.NamespaceManager),
                 this.NamespaceManager,
                 NamespaceAlias,
                 "warning");

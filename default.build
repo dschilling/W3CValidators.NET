@@ -53,6 +53,9 @@
         <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
         <include name="${build.path}/W3CValidators.dll"/>
       </references>
+      <resources prefix="W3CValidators.Test">
+        <include name="src/W3CValidators.Test/response.xml"/>
+      </resources>
       <sources>
         <include name="src/W3CValidators.Test/**/*.cs"/>
       </sources>
