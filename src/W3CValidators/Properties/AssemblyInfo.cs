@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2009 Daniel A. Schilling
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 

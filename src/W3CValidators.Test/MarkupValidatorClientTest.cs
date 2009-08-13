@@ -4,6 +4,7 @@ namespace W3CValidators.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Net;
     using System.Text;
     using System.Threading;
@@ -66,6 +67,37 @@ namespace W3CValidators.Test
         {
             var response = _client.Check(new Uri(url), null);
             Assert.That(response.Validity, Is.EqualTo(valid));
+        }
+
+        /// <remarks>
+        /// This test really only applies to http://validator.w3.org/check.  When pointed at other
+        /// validators, the client should be allowed to go full speed ahead.
+        /// </remarks>
+        [Test]
+        public void Client_Should_Wait_One_Second_Between_Requests()
+        {
+            if (!Equals(ValidatorUri, MarkupValidatorClient.PublicValidator))
+                throw new IgnoreException("This test only applies to http://validator.w3.org/check.");
+
+            var stopWatch = new Stopwatch();
+            int[] requestCount = { 0 };
+
+            _client.ResponseRecieved += (sender, e) =>
+            {
+                if (requestCount[0] == 1)
+                    stopWatch.Start();
+            };
+            _client.SendingRequest += (sender, e) =>
+            {
+                if (requestCount[0] == 1)
+                    stopWatch.Stop();
+                requestCount[0]++;
+            };
+
+            _client.Check(new Uri(ValidXhtmlUrl), null);
+            _client.Check(new Uri(ValidXhtmlUrl), null);
+
+            Assert.That(stopWatch.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
         }
     }
 }

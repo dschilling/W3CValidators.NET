@@ -29,6 +29,7 @@
       <references>
         <include name="System.dll"/>
         <include name="System.Web.dll"/>
+        <include name="System.XML.dll"/>
       </references>
       <sources>
         <include name="src/W3CValidators/**/*.cs"/>

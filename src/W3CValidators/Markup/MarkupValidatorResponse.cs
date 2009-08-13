@@ -28,14 +28,14 @@ namespace W3CValidators.Markup
 
             doc.Load(stream);
 
-            _root = doc.SelectSingleNode(string.Format("/e:Envelope/e:Body/{0}:markupvalidationresponse", NamespaceAlias), _nsmgr);
+            _root = doc.SelectSingleNode(string.Concat("/e:Envelope/e:Body/", NamespaceAlias, ":markupvalidationresponse"), _nsmgr);
         }
 
         private string this[string name]
         {
             get
             {
-                var node = _root.SelectSingleNode(string.Format("child::{0}:{1}", NamespaceAlias, name), _nsmgr);
+                var node = _root.SelectSingleNode(string.Concat("child::", NamespaceAlias, ":", name), _nsmgr);
                 if (node != null && !string.IsNullOrEmpty(node.InnerText))
                     return node.InnerText;
                 return null;

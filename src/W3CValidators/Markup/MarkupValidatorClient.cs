@@ -15,6 +15,11 @@ namespace W3CValidators.Markup
     /// </summary>
     public class MarkupValidatorClient
     {
+        /// <summary>
+        /// The location of W3C's free public markup validator service.
+        /// </summary>
+        public static readonly Uri PublicValidator = new Uri("http://validator.w3.org/check");
+
         private readonly Uri _validator;
 
         /// <summary>
@@ -22,7 +27,7 @@ namespace W3CValidators.Markup
         /// http://validator.w3.org/check.
         /// </summary>
         public MarkupValidatorClient()
-            : this(new Uri("http://validator.w3.org/check"))
+            : this(PublicValidator)
         {}
 
         /// <summary>
@@ -147,11 +152,38 @@ namespace W3CValidators.Markup
             return new Uri(uriString);
         }
 
-        private static MarkupValidatorResponse ParseResponse(WebRequest request)
+        private MarkupValidatorResponse ParseResponse(WebRequest request)
         {
+            this.OnSendingRequest();
+
             using (var response = request.GetResponse())
-            using (var stream = response.GetResponseStream())
-                return new MarkupValidatorResponse(stream);
+            {
+                this.OnResponseRecieved();
+                using (var stream = response.GetResponseStream())
+                    return new MarkupValidatorResponse(stream);
+            }
+        }
+
+        /// <summary>
+        /// Fires just before the client sends its request to the service.
+        /// </summary>
+        public event EventHandler SendingRequest;
+
+        private void OnSendingRequest()
+        {
+            if (this.SendingRequest != null)
+                this.SendingRequest(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Fires just after the response has been recieved from the service.
+        /// </summary>
+        public event EventHandler ResponseRecieved;
+
+        private void OnResponseRecieved()
+        {
+            if (this.ResponseRecieved != null)
+                this.ResponseRecieved(this, EventArgs.Empty);
         }
     }
 }
