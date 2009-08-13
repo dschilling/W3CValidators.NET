@@ -2,44 +2,66 @@
 
 namespace W3CValidators.Markup
 {
-    using System;
+    using System.Xml;
 
     /// <summary>
     /// A single error or warning.
     /// </summary>
-    public class MarkupValidatorAtomicMessage
+    public class MarkupValidatorAtomicMessage : MarkupValidationResponseBase
     {
+        internal MarkupValidatorAtomicMessage(XmlNode node, XmlNamespaceManager nsmgr, string namespaceAlias)
+            : base(node, nsmgr, namespaceAlias)
+        {}
+
         /// <summary>
         /// Within the source code of the validated document, refers to the line where the error or
         /// warning was detected.
         /// </summary>
-        public int Line { get { throw new NotImplementedException(); } }
+        public int Line
+        {
+            get { return this.GetInt("line"); }
+        }
 
         /// <summary>
         /// Within the source code of the validated document, refers to the column of the line
         /// where the error or warning was detected.
         /// </summary>
-        public int Col { get { throw new NotImplementedException(); } }
+        public int Col
+        {
+            get { return this.GetInt("col"); }
+        }
 
         /// <summary>
         /// The actual error or warning message.
         /// </summary>
-        public string Message { get { throw new NotImplementedException(); } }
+        public string Message
+        {
+            get { return this["message"]; }
+        }
 
         /// <summary>
         /// The number/identifier of the error or warning, as addressed internally by the
         /// validator.
         /// </summary>
-        public string MessageId { get { throw new NotImplementedException(); } }
+        public string MessageId
+        {
+            get { return this["messageid"]; }
+        }
 
         /// <summary>
         /// Explanation for the error or warning. Given as an HTML fragment.
         /// </summary>
-        public string Explanation { get { throw new NotImplementedException(); } }
+        public string Explanation
+        {
+            get { return this["explanation"]; }
+        }
 
         /// <summary>
         /// Snippet of the source where the error or warning was found. Given as an HTML fragment.
         /// </summary>
-        public string Source { get { throw new NotImplementedException(); } }
+        public string Source
+        {
+            get { return this["source"]; }
+        }
     }
 }

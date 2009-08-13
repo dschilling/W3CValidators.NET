@@ -9,8 +9,6 @@ namespace W3CValidators.Markup
     using System.Threading;
     using System.Web;
 
-    // TODO: throttle down to 1 request per second if pointed at http://validator.w3.org/check
-
     /// <summary>
     /// Communicates with a W3C Markup Validator service.
     /// </summary>
