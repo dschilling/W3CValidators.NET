@@ -4,6 +4,7 @@ namespace W3CValidators.Markup
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
 
@@ -12,7 +13,7 @@ namespace W3CValidators.Markup
     /// <summary>
     /// A response from the validator service.
     /// </summary>
-    public class MarkupValidatorResponse : MarkupValidationResponseBase
+    public class MarkupValidatorResponse : MarkupValidatorResponseBase
     {
         private readonly IList<MarkupValidatorAtomicMessage> _errors;
         private readonly IList<MarkupValidatorAtomicMessage> _warnings;
@@ -59,6 +60,7 @@ namespace W3CValidators.Markup
         /// <summary>
         /// Detected (or forced) Character Encoding for the validated document.
         /// </summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Charset")]
         public Encoding Charset
         {
             get { return GetEncoding("charset"); }

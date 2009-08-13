@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\W3CValidators.xml</DocumentationFile>
@@ -40,12 +40,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Markup\MarkupValidationResponseBase.cs" />
     <Compile Include="Markup\MarkupValidatorAtomicMessage.cs" />
     <Compile Include="Markup\MarkupValidatorAtomicMessageList.cs" />
     <Compile Include="Markup\MarkupValidatorClient.cs" />
     <Compile Include="Markup\MarkupValidatorOptions.cs" />
     <Compile Include="Markup\MarkupValidatorResponse.cs" />
+    <Compile Include="Markup\MarkupValidatorResponseBase.cs" />
     <Compile Include="Markup\MultipartFormDataWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

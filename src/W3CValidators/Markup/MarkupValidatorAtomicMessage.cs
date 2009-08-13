@@ -7,10 +7,10 @@ namespace W3CValidators.Markup
     /// <summary>
     /// A single error or warning.
     /// </summary>
-    public class MarkupValidatorAtomicMessage : MarkupValidationResponseBase
+    public class MarkupValidatorAtomicMessage : MarkupValidatorResponseBase
     {
-        internal MarkupValidatorAtomicMessage(XmlNode node, XmlNamespaceManager nsmgr, string namespaceAlias)
-            : base(node, nsmgr, namespaceAlias)
+        internal MarkupValidatorAtomicMessage(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias)
+            : base(node, namespaceManager, namespaceAlias)
         {}
 
         /// <summary>

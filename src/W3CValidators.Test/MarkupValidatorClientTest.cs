@@ -96,7 +96,7 @@ namespace W3CValidators.Test
             var stopWatch = new Stopwatch();
             int[] requestCount = { 0 };
 
-            this._client.ResponseRecieved += (sender, e) =>
+            this._client.ResponseReceived += (sender, e) =>
             {
                 if (requestCount[0] == 1)
                     stopWatch.Start();

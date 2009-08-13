@@ -3,6 +3,7 @@
 namespace W3CValidators.Markup
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
     /// <summary>
@@ -14,6 +15,7 @@ namespace W3CValidators.Markup
         /// Character encoding override.  Specify the character encoding to use when parsing the
         /// document.  Note that this parameter is ignored when using the "fragment" method.
         /// </summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Charset")]
         public Encoding Charset { get; set; }
 
         /// <summary>

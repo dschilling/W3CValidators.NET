@@ -25,7 +25,8 @@
          target="library"
          debug="${debug}"
          keyfile="src/W3CValidators/W3CValidators.snk"
-         doc="${build.path}/W3CValidators.xml">
+         doc="${build.path}/W3CValidators.xml"
+         define="CODE_ANALYSIS">
       <references>
         <include name="System.dll"/>
         <include name="System.Web.dll"/>

@@ -5,3 +5,4 @@ src/_ReSharper.*/
 src/*/bin/
 src/*/obj/
 build/
+src/*/*.csproj.user

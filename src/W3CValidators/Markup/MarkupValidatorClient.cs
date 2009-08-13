@@ -170,7 +170,7 @@ namespace W3CValidators.Markup
 
             using (var response = request.GetResponse())
             {
-                this.OnResponseRecieved();
+                this.OnResponseReceived();
                 using (var stream = response.GetResponseStream())
                     return new MarkupValidatorResponse(stream);
             }
@@ -190,12 +190,12 @@ namespace W3CValidators.Markup
         /// <summary>
         /// Fires just after the response has been recieved from the service.
         /// </summary>
-        public event EventHandler ResponseRecieved;
+        public event EventHandler ResponseReceived;
 
-        private void OnResponseRecieved()
+        private void OnResponseReceived()
         {
-            if (this.ResponseRecieved != null)
-                this.ResponseRecieved(this, EventArgs.Empty);
+            if (this.ResponseReceived != null)
+                this.ResponseReceived(this, EventArgs.Empty);
         }
     }
 }

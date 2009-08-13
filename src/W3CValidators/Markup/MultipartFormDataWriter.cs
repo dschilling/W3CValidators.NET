@@ -24,7 +24,14 @@ namespace W3CValidators.Markup
 
         public void Dispose()
         {
-            this.WriteLine(_footer);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+                this.WriteLine(_footer);
         }
 
         public void Write(string name, string value)

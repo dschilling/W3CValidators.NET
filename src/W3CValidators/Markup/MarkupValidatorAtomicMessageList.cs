@@ -7,13 +7,13 @@ namespace W3CValidators.Markup
     using System.Collections.Generic;
     using System.Xml;
 
-    internal class MarkupValidatorAtomicMessageList : MarkupValidationResponseBase, IList<MarkupValidatorAtomicMessage>
+    internal class MarkupValidatorAtomicMessageList : MarkupValidatorResponseBase, IList<MarkupValidatorAtomicMessage>
     {
         private readonly string _type;
         private readonly MarkupValidatorAtomicMessage[] _array;
 
-        internal MarkupValidatorAtomicMessageList(XmlNode node, XmlNamespaceManager nsmgr, string namespaceAlias, string type)
-            : base(node, nsmgr, namespaceAlias)
+        internal MarkupValidatorAtomicMessageList(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias, string type)
+            : base(node, namespaceManager, namespaceAlias)
         {
             _type = type;
 
