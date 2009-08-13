@@ -7,8 +7,7 @@ namespace W3CValidators.Markup
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
-
-    // TODO: include <m:Debug> results.
+    using System.Xml;
 
     /// <summary>
     /// A response from the validator service.
@@ -17,6 +16,7 @@ namespace W3CValidators.Markup
     {
         private readonly IList<MarkupValidatorAtomicMessage> _errors;
         private readonly IList<MarkupValidatorAtomicMessage> _warnings;
+        private readonly IDictionary<string, string> _debug;
 
         /// <summary>
         /// Constructs a new MarkupValidatorResponse to parse the data in the stream.
@@ -35,6 +35,12 @@ namespace W3CValidators.Markup
                 this.NamespaceManager,
                 NamespaceAlias,
                 "warning");
+            _debug = new Dictionary<string, string>();
+            var debugNodes = this.Node.SelectNodes(string.Concat("child::", NamespaceAlias, ":debug"), this.NamespaceManager);
+            foreach (XmlNode debugNode in debugNodes)
+            {
+                _debug.Add(debugNode.Attributes["name"].Value, debugNode.InnerText);
+            }
         }
 
         /// <summary>
@@ -92,6 +98,14 @@ namespace W3CValidators.Markup
         public ICollection<MarkupValidatorAtomicMessage> Warnings
         {
             get { return _warnings; }
+        }
+
+        /// <summary>
+        /// Contains debug messages if the Debug option was enabled.
+        /// </summary>
+        public IDictionary<string, string> Debug
+        {
+            get { return _debug; }
         }
     }
 }

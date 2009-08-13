@@ -3,6 +3,20 @@
 <env:Body>
 <m:markupvalidationresponse env:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:m="http://www.w3.org/2005/10/markup-validator">
     
+    <m:debug name="no_proxy">(undefined)</m:debug>
+    <m:debug name="http_proxy">(undefined)</m:debug>
+    <m:debug name="https_proxy">(undefined)</m:debug>
+    <m:debug name="ftp_proxy">(undefined)</m:debug>
+    <m:debug name="FTP_PASSIVE">1</m:debug>
+    <m:debug name="Content-Encoding">(undefined)</m:debug>
+    <m:debug name="Content-Language">(undefined)</m:debug>
+    <m:debug name="Content-Location">(undefined)</m:debug>
+    <m:debug name="Transfer-Encoding">(undefined)</m:debug>
+    <m:debug name="Parse Mode">DTD+XML</m:debug>
+    <m:debug name="Parse Mode Factor">Doctype</m:debug>
+    <m:debug name="Parser">SGML::Parser::OpenSP</m:debug>
+    <m:debug name="Parser Options">valid non-sgml-char-ref no-duplicate</m:debug>
+    
     <m:uri>http://raw-data.org/sites/default/files/invalidXhtml11.html</m:uri>
     <m:checkedby>http://validator.w3.org/</m:checkedby>
     <m:doctype>-//W3C//DTD XHTML 1.1//EN</m:doctype>

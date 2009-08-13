@@ -98,5 +98,11 @@ namespace W3CValidators.Test
         {
             Assert.That(_response.Warnings.Count, Is.EqualTo(0));
         }
+
+        [Test]
+        public void Debug_Should_Contain_The_Correct_Data()
+        {
+            Assert.That(_response.Debug["Parser"], Is.EqualTo("SGML::Parser::OpenSP"));
+        }
     }
 }
