@@ -6,6 +6,7 @@ namespace W3CValidators.Markup
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
+    using System.Threading;
     using System.Web;
 
     // TODO: throttle down to 1 request per second if pointed at http://validator.w3.org/check
@@ -19,6 +20,7 @@ namespace W3CValidators.Markup
         /// The location of W3C's free public markup validator service.
         /// </summary>
         public static readonly Uri PublicValidator = new Uri("http://validator.w3.org/check");
+        private static readonly object ThrottleLock = new object();
 
         private readonly Uri _validator;
 
@@ -48,7 +50,7 @@ namespace W3CValidators.Markup
         /// <param name="documentUri">the location of the document to be validated</param>
         /// <param name="options">configuration options</param>
         /// <returns>a MarkupValidatorResponse object</returns>
-        public MarkupValidatorResponse Check(Uri documentUri, MarkupValidatorOptions options)
+        public MarkupValidatorResponse CheckByUri(Uri documentUri, MarkupValidatorOptions options)
         {
             if (options == null)
                 options = new MarkupValidatorOptions();
@@ -57,7 +59,7 @@ namespace W3CValidators.Markup
             queryStrings.Add("uri", documentUri.ToString());
             var request = WebRequest.Create(AppendQueryString(_validator, queryStrings));
 
-            return ParseResponse(request);
+            return ThrottledParseResponse(request);
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace W3CValidators.Markup
         /// <param name="documentData">the document to upload</param>
         /// <param name="options">configuration options</param>
         /// <returns>a MarkupValidatorResponse object</returns>
-        public MarkupValidatorResponse Check(byte[] documentData, MarkupValidatorOptions options)
+        public MarkupValidatorResponse CheckByUpload(byte[] documentData, MarkupValidatorOptions options)
         {
             if (options == null)
                 options = new MarkupValidatorOptions();
@@ -76,7 +78,7 @@ namespace W3CValidators.Markup
                 options,
                 writer => writer.Write("uploaded_file", "document.html", "text/html", documentData));
 
-            return ParseResponse(request);
+            return ThrottledParseResponse(request);
         }
 
         /// <summary>
@@ -86,7 +88,7 @@ namespace W3CValidators.Markup
         /// <param name="documentFragment">the document to upload</param>
         /// <param name="options">configuration options</param>
         /// <returns>a MarkupValidatorResponse object</returns>
-        public MarkupValidatorResponse Check(string documentFragment, MarkupValidatorOptions options)
+        public MarkupValidatorResponse CheckByFragment(string documentFragment, MarkupValidatorOptions options)
         {
             if (options == null)
                 options = new MarkupValidatorOptions();
@@ -95,7 +97,7 @@ namespace W3CValidators.Markup
                 options,
                 writer => writer.Write("fragment", documentFragment));
 
-            return ParseResponse(request);
+            return ThrottledParseResponse(request);
         }
 
         private WebRequest ConstructPostRequest(MarkupValidatorOptions options, Action<MultipartFormDataWriter> writePayload)
@@ -150,6 +152,18 @@ namespace W3CValidators.Markup
                 string.Join("&", pieces));
 
             return new Uri(uriString);
+        }
+
+        private MarkupValidatorResponse ThrottledParseResponse(WebRequest request)
+        {
+            if (!Equals(this._validator, PublicValidator))
+                return this.ParseResponse(request);
+
+            lock (ThrottleLock)
+            {
+                Thread.Sleep(1000);
+                return this.ParseResponse(request);
+            }
         }
 
         private MarkupValidatorResponse ParseResponse(WebRequest request)

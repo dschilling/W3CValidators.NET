@@ -14,7 +14,6 @@ namespace W3CValidators.Test
     [TestFixture]
     public class MarkupValidatorClientTest
     {
-        private static readonly Uri ValidatorUri = new Uri("http://validator.w3.org/check");
         private const string ValidXhtmlUrl = "http://raw-data.org/sites/default/files/validXhtml11.html";
         private const string InvalidXhtmlUrl = "http://raw-data.org/sites/default/files/invalidXhtml11.html";
 
@@ -41,7 +40,7 @@ namespace W3CValidators.Test
             //     all, your respect is appreciated. thanks.
             Thread.Sleep(1000);
 
-            _client = new MarkupValidatorClient(ValidatorUri);
+            _client = new MarkupValidatorClient(MarkupValidatorClient.PublicValidator);
         }
 
         [TestCase(true)]
@@ -49,7 +48,7 @@ namespace W3CValidators.Test
         public void Client_Should_Return_Correct_Response_By_Fragment_Method(bool valid)
         {
             var document = Encoding.UTF8.GetString(_examples[valid]);
-            var response = _client.Check(document, null);
+            var response = _client.CheckByFragment(document, null);
             Assert.That(response.Validity, Is.EqualTo(valid));            
         }
 
@@ -57,7 +56,7 @@ namespace W3CValidators.Test
         [TestCase(false)]
         public void Client_Should_Return_Correct_Response_By_Upload_Method(bool valid)
         {
-            var response = _client.Check(_examples[valid], null);
+            var response = _client.CheckByUpload(_examples[valid], null);
             Assert.That(response.Validity, Is.EqualTo(valid));
         }
 
@@ -65,37 +64,52 @@ namespace W3CValidators.Test
         [TestCase(InvalidXhtmlUrl, false)]
         public void Client_Should_Return_Correct_Response_By_Uri_Method(string url, bool valid)
         {
-            var response = _client.Check(new Uri(url), null);
+            var response = _client.CheckByUri(new Uri(url), null);
             Assert.That(response.Validity, Is.EqualTo(valid));
+        }
+
+        [Test]
+        public void Client_Should_Wait_One_Second_Between_Requests_By_Fragment_Method()
+        {
+            var document = Encoding.UTF8.GetString(_examples[true]);
+            Client_Should_Wait_One_Second_Between_Requests(client => client.CheckByFragment(document, null));
+        }
+
+        [Test]
+        public void Client_Should_Wait_One_Second_Between_Requests_By_Upload_Method()
+        {
+            Client_Should_Wait_One_Second_Between_Requests(client => client.CheckByUpload(_examples[true], null));
+        }
+
+        [Test]
+        public void Client_Should_Wait_One_Second_Between_Requests_By_Uri_Method()
+        {
+            Client_Should_Wait_One_Second_Between_Requests(client => client.CheckByUri(new Uri(ValidXhtmlUrl), null));
         }
 
         /// <remarks>
         /// This test really only applies to http://validator.w3.org/check.  When pointed at other
         /// validators, the client should be allowed to go full speed ahead.
         /// </remarks>
-        [Test]
-        public void Client_Should_Wait_One_Second_Between_Requests()
+        private void Client_Should_Wait_One_Second_Between_Requests(Action<MarkupValidatorClient> check)
         {
-            if (!Equals(ValidatorUri, MarkupValidatorClient.PublicValidator))
-                throw new IgnoreException("This test only applies to http://validator.w3.org/check.");
-
             var stopWatch = new Stopwatch();
             int[] requestCount = { 0 };
 
-            _client.ResponseRecieved += (sender, e) =>
+            this._client.ResponseRecieved += (sender, e) =>
             {
                 if (requestCount[0] == 1)
                     stopWatch.Start();
             };
-            _client.SendingRequest += (sender, e) =>
+            this._client.SendingRequest += (sender, e) =>
             {
                 if (requestCount[0] == 1)
                     stopWatch.Stop();
                 requestCount[0]++;
             };
 
-            _client.Check(new Uri(ValidXhtmlUrl), null);
-            _client.Check(new Uri(ValidXhtmlUrl), null);
+            check(_client);
+            check(_client);
 
             Assert.That(stopWatch.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
         }
