@@ -47,14 +47,33 @@ namespace W3CValidators.Markup
         internal protected MarkupValidatorResponseBase(Stream stream)
         {
             var doc = new XmlDocument();
+            var soapAlias = "e";
             _namespaceAlias = "m";
             _nsmgr = new XmlNamespaceManager(doc.NameTable);
-            _nsmgr.AddNamespace("e", "http://www.w3.org/2003/05/soap-envelope");
+            _nsmgr.AddNamespace(soapAlias, "http://www.w3.org/2003/05/soap-envelope");
             _nsmgr.AddNamespace(_namespaceAlias, "http://www.w3.org/2005/10/markup-validator");
 
             doc.Load(stream);
 
-            _node = doc.SelectSingleNode(string.Concat("/e:Envelope/e:Body/", _namespaceAlias, ":markupvalidationresponse"), _nsmgr);
+            var faultNode = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", soapAlias, ":Fault"), _nsmgr);
+            if (faultNode != null)
+                throw CreateFaultException(faultNode, _nsmgr, soapAlias, _namespaceAlias);
+
+            _node = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", _namespaceAlias, ":markupvalidationresponse"), _nsmgr);
+        }
+
+        private static SoapFaultException CreateFaultException(XmlNode node, XmlNamespaceManager namespaceManager, string soapAlias, string validatorAlias)
+        {
+            var reasonNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Reason/", soapAlias, ":Text"), namespaceManager);
+            var reason = reasonNode != null ? reasonNode.InnerText : null;
+
+            var messageIdNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":messageid"), namespaceManager);
+            var messageId = messageIdNode != null ? messageIdNode.InnerText : null;
+
+            var errorDetailNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":errordetail"), namespaceManager);
+            var errorDetail = errorDetailNode != null ? errorDetailNode.InnerText : null;
+
+            return new SoapFaultException(reason, messageId, errorDetail);
         }
 
         /// <summary>
