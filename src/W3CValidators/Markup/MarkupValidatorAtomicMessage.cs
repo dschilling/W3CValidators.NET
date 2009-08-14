@@ -63,5 +63,10 @@ namespace W3CValidators.Markup
         {
             get { return this["source"]; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("Line: {0}; Col: {1}; Message: {2}; Source: {3};", Line, Col, Message, Source);
+        }
     }
 }

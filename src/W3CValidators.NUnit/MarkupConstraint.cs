@@ -90,8 +90,16 @@ namespace W3CValidators.NUnit
         /// <param name="writer">The writer on which the description is displayed</param>
         public override void WriteDescriptionTo(MessageWriter writer)
         {
-            // TODO: implement.
-            throw new NotImplementedException();
+            writer.WriteLine("The document did not contain valid markup.");
+            foreach (var error in _response.Errors)
+            {
+                writer.WriteLine(error);
+            }
+        }
+
+        public override void WriteMessageTo(MessageWriter writer)
+        {
+            this.WriteDescriptionTo(writer);
         }
     }
 }

@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MarkupValidatorClientTest.cs" />
+    <Compile Include="MarkupValidatorResponseFaultTest.cs" />
     <Compile Include="MarkupValidatorResponseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="response.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="fault.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

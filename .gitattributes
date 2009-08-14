@@ -1,1 +1,2 @@
 src/W3CValidators.Test/response.xml -crlf
+src/W3CValidators.Test/fault.xml -crlf

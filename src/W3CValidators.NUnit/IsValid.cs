@@ -10,7 +10,7 @@ namespace W3CValidators.NUnit
         /// <summary>
         /// Returns a constraint that checks a document for valid markup.
         /// </summary>
-        public static IResolveConstraint Markup()
+        public static Constraint Markup()
         {
             return new MarkupConstraint(ValidationOptions.Normal);
         }
@@ -18,7 +18,7 @@ namespace W3CValidators.NUnit
         /// <summary>
         /// Returns a constraint that checks a document for valid markup.
         /// </summary>
-        public static IResolveConstraint Markup(ValidationOptions options)
+        public static Constraint Markup(ValidationOptions options)
         {
             return new MarkupConstraint(options);
         }
