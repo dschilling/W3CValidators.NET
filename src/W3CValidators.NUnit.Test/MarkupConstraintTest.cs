@@ -3,6 +3,7 @@ namespace W3CValidators.NUnit.Test
     using System;
     using System.IO;
     using global::NUnit.Framework;
+    using Markup;
 
     [TestFixture]
     public class MarkupConstraintTest
@@ -49,7 +50,7 @@ namespace W3CValidators.NUnit.Test
                 var uri = new Uri(htmlPath);
                 Assert.That(uri, IsValid.Markup());
             },
-            Throws.InstanceOf<ArgumentNullException>());
+            Throws.InstanceOf<SoapFaultException>());
         }
     }
 }
