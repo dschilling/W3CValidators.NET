@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7B7CDD8A-E541-4048-BB5B-439D2C05BE9C}</ProjectGuid>
+    <ProjectGuid>{2C43C206-A71D-4025-A24B-CBF09906F19A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>W3CValidators</RootNamespace>
-    <AssemblyName>W3CValidators</AssemblyName>
+    <RootNamespace>W3CValidators.NUnit</RootNamespace>
+    <AssemblyName>W3CValidators.NUnit</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -20,10 +20,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\W3CValidators.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\W3CValidators.NUnit.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,22 +32,25 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\W3CValidators.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\W3CValidators.NUnit.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\nunit\2.5\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Markup\MarkupValidatorAtomicMessage.cs" />
-    <Compile Include="Markup\MarkupValidatorAtomicMessageList.cs" />
-    <Compile Include="Markup\MarkupValidatorClient.cs" />
-    <Compile Include="Markup\MarkupValidatorOptions.cs" />
-    <Compile Include="Markup\MarkupValidatorResponse.cs" />
-    <Compile Include="Markup\MarkupValidatorResponseBase.cs" />
-    <Compile Include="Markup\MultipartFormDataWriter.cs" />
+    <Compile Include="IsValid.cs" />
+    <Compile Include="MarkupConstraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\W3CValidators\W3CValidators.csproj">
+      <Project>{7B7CDD8A-E541-4048-BB5B-439D2C05BE9C}</Project>
+      <Name>W3CValidators</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

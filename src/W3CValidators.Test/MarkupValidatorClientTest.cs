@@ -110,14 +110,18 @@ namespace W3CValidators.Test
             this._client.SendingRequest += (sender, e) =>
             {
                 if (requestCount[0] == 1)
+                {
                     stopWatch.Stop();
+                    // If the assertion fails, an exception will be thrown and we will never
+                    // execute the 2nd "too early" request.  In other words, even if our code is
+                    // broken, this test will not abuse the w3c validator service.
+                    Assert.That(stopWatch.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
+                }
                 requestCount[0]++;
             };
 
             check(_client);
             check(_client);
-
-            Assert.That(stopWatch.ElapsedMilliseconds, Is.GreaterThanOrEqualTo(1000));
         }
     }
 }

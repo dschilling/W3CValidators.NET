@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3CValidators", "W3CValidat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3CValidators.Test", "W3CValidators.Test\W3CValidators.Test.csproj", "{1C2FBC0B-932B-4550-9763-7A18D460DAA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3CValidators.NUnit", "W3CValidators.NUnit\W3CValidators.NUnit.csproj", "{2C43C206-A71D-4025-A24B-CBF09906F19A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3CValidators.NUnit.Test", "W3CValidators.NUnit.Test\W3CValidators.NUnit.Test.csproj", "{458ADF22-9F9F-4AC5-8123-6CA5E3FF5E2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{1C2FBC0B-932B-4550-9763-7A18D460DAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C2FBC0B-932B-4550-9763-7A18D460DAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C2FBC0B-932B-4550-9763-7A18D460DAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C43C206-A71D-4025-A24B-CBF09906F19A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C43C206-A71D-4025-A24B-CBF09906F19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C43C206-A71D-4025-A24B-CBF09906F19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C43C206-A71D-4025-A24B-CBF09906F19A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{458ADF22-9F9F-4AC5-8123-6CA5E3FF5E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{458ADF22-9F9F-4AC5-8123-6CA5E3FF5E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{458ADF22-9F9F-4AC5-8123-6CA5E3FF5E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{458ADF22-9F9F-4AC5-8123-6CA5E3FF5E2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

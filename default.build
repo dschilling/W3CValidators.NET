@@ -18,13 +18,13 @@
     <mkdir dir="${build.path}" />
   </target>
 
-  <target name="compile" depends="main.compile" />
+  <target name="compile" depends="main.compile,testsupport.compile" />
 
   <target name="main.compile" depends="init">
     <csc output="${build.path}/W3CValidators.dll"
          target="library"
          debug="${debug}"
-         keyfile="src/W3CValidators/W3CValidators.snk"
+         keyfile="src/W3CValidators.snk"
          doc="${build.path}/W3CValidators.xml"
          define="CODE_ANALYSIS">
       <references>
@@ -38,7 +38,30 @@
     </csc>
   </target>
 
-  <target name="test" depends="main.test" />
+  <target name="testsupport.compile" depends="init,main.compile">
+    <csc output="${build.path}/W3CValidators.NUnit.dll"
+         target="library"
+         debug="${debug}"
+         keyfile="src/W3CValidators.snk"
+         doc="${build.path}/W3CValidators.NUnit.xml"
+         define="CODE_ANALYSIS">
+      <references>
+        <include name="System.dll"/>
+        <include name="lib/nunit/2.5/nunit.framework.dll"/>
+        <include name="${build.path}/W3CValidators.dll"/>
+      </references>
+      <sources>
+        <include name="src/W3CValidators.NUnit/**/*.cs"/>
+      </sources>
+    </csc>
+  </target>
+
+  <target name="test" depends="main.test.compile,testsupport.test.compile">
+    <exec basedir="tools\nunit\bin\net-2.0"
+      program="nunit-console.exe"
+      workingdir="${build.path}/test"
+      commandline="W3CValidators.Test.dll W3CValidators.NUnit.Test.dll" />
+  </target>
 
   <target name="test.init" depends="init">
     <mkdir dir="${build.path}/test" />
@@ -74,6 +97,37 @@
           program="nunit-console.exe"
           workingdir="${build.path}/test"
           commandline="W3CValidators.Test.dll" />
+  </target>
+
+  <target name="testsupport.test.compile" depends="test.init,testsupport.compile">
+    <csc output="${build.path}/test/W3CValidators.NUnit.Test.dll"
+         target="library"
+         debug="${debug}">
+      <references>
+        <include name="System.dll"/>
+        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
+        <include name="${build.path}/W3CValidators.dll"/>
+        <include name="${build.path}/W3CValidators.NUnit.dll"/>
+      </references>
+      <sources>
+        <include name="src/W3CValidators.NUnit.Test/**/*.cs"/>
+      </sources>
+    </csc>
+
+    <copy todir="${build.path}/test" flatten="true">
+      <fileset>
+        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
+        <include name="${build.path}/W3CValidators.dll"/>
+        <include name="${build.path}/W3CValidators.NUnit.dll"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="testsupport.test" depends="testsupport.test.compile">
+    <exec basedir="tools\nunit\bin\net-2.0"
+          program="nunit-console.exe"
+          workingdir="${build.path}/test"
+          commandline="W3CValidators.NUnit.Test.dll" />
   </target>
 
 </project>
