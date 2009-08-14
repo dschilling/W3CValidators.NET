@@ -45,6 +45,7 @@
     <Compile Include="IsValid.cs" />
     <Compile Include="MarkupConstraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\W3CValidators\W3CValidators.csproj">
