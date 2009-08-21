@@ -8,7 +8,7 @@
   <property name="target" value="Debug" overwrite="true" if="${debug}"/>
   <property name="build.path" value="build/${target}"/>
 
-  <target name="all" depends="compile,test" />
+  <target name="all" depends="compile,test,fxcop" />
   
   <target name="clean">
     <delete dir="build" if="${directory::exists('build')}" />
@@ -54,6 +54,12 @@
         <include name="src/W3CValidators.NUnit/**/*.cs"/>
       </sources>
     </csc>
+
+    <copy todir="${build.path}" flatten="true">
+      <fileset>
+        <include name="lib/nunit/2.5/nunit.framework.dll"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="test" depends="main.test.compile,testsupport.test.compile">
@@ -131,6 +137,28 @@
           program="nunit-console.exe"
           workingdir="${build.path}/test"
           commandline="W3CValidators.NUnit.Test.dll /xml=../results/test/testsupport.test.xml" />
+  </target>
+  
+  <target name="fxcop" depends="compile,fxcop.init">
+    <exec program="FxCopCmd.exe"
+          workingdir="${build.path}"
+          commandline="/file:W3CValidators.dll /file:W3CValidators.NUnit.dll /out:results/fxcop/fxcop.xml" />
+  </target>
+  
+  <target name="fxcop.init" depends="init">
+    <mkdir dir="${build.path}/results/fxcop" />
+  </target>
+
+  <target name="main.fxcop" depends="main.compile,fxcop.init">
+    <exec program="FxCopCmd.exe"
+          workingdir="${build.path}"
+          commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml" />
+  </target>
+
+  <target name="testsupport.fxcop" depends="testsupport.compile,fxcop.init">
+    <exec program="FxCopCmd.exe"
+          workingdir="${build.path}"
+          commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
   </target>
 
 </project>
