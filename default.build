@@ -9,6 +9,8 @@
   <property name="build.path" value="build/${target}"/>
 
   <target name="all" depends="compile,test,fxcop" />
+  <target name="main" depends="main.compile,main.test,main.fxcop" />
+  <target name="testsupport" depends="testsupport.compile,testsupport.test,testsupport.fxcop" />
   
   <target name="clean">
     <delete dir="build" if="${directory::exists('build')}" />
@@ -62,12 +64,7 @@
     </copy>
   </target>
 
-  <target name="test" depends="main.test.compile,testsupport.test.compile">
-    <exec basedir="tools\nunit\bin\net-2.0"
-      program="nunit-console.exe"
-      workingdir="${build.path}/test"
-      commandline="W3CValidators.Test.dll W3CValidators.NUnit.Test.dll /xml=../results/test/test.xml" />
-  </target>
+  <target name="test" depends="main.test,testsupport.test" />
 
   <target name="test.init" depends="init">
     <mkdir dir="${build.path}/test" />
@@ -139,26 +136,38 @@
           commandline="W3CValidators.NUnit.Test.dll /xml=../results/test/testsupport.test.xml" />
   </target>
   
-  <target name="fxcop" depends="compile,fxcop.init">
-    <exec program="FxCopCmd.exe"
-          workingdir="${build.path}"
-          commandline="/file:W3CValidators.dll /file:W3CValidators.NUnit.dll /out:results/fxcop/fxcop.xml" />
-  </target>
+  <target name="fxcop" depends="main.fxcop,testsupport.fxcop" />
   
   <target name="fxcop.init" depends="init">
     <mkdir dir="${build.path}/results/fxcop" />
   </target>
 
   <target name="main.fxcop" depends="main.compile,fxcop.init">
-    <exec program="FxCopCmd.exe"
-          workingdir="${build.path}"
-          commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml" />
+    <if test="${property::exists('fxcop.path')}">
+      <exec basedir="${fxcop.path}"
+            program="FxCopCmd.exe"
+            workingdir="${build.path}"
+            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml /console" />
+    </if>
+    <if test="${not property::exists('fxcop.path')}">
+      <exec program="FxCopCmd.exe"
+            workingdir="${build.path}"
+            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml /console" />
+    </if>
   </target>
 
   <target name="testsupport.fxcop" depends="testsupport.compile,fxcop.init">
-    <exec program="FxCopCmd.exe"
-          workingdir="${build.path}"
-          commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
+    <if test="${property::exists('fxcop.path')}">
+      <exec basedir="${fxcop.path}"
+            program="FxCopCmd.exe"
+            workingdir="${build.path}"
+            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /console" />
+    </if>
+    <if test="${not property::exists('fxcop.path')}">
+      <exec program="FxCopCmd.exe"
+            workingdir="${build.path}"
+            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /console" />
+    </if>
   </target>
 
 </project>
