@@ -60,11 +60,12 @@
     <exec basedir="tools\nunit\bin\net-2.0"
       program="nunit-console.exe"
       workingdir="${build.path}/test"
-      commandline="W3CValidators.Test.dll W3CValidators.NUnit.Test.dll" />
+      commandline="W3CValidators.Test.dll W3CValidators.NUnit.Test.dll /xml=../results/test/test.xml" />
   </target>
 
   <target name="test.init" depends="init">
     <mkdir dir="${build.path}/test" />
+    <mkdir dir="${build.path}/results/test" />
   </target>
 
   <target name="main.test.compile" depends="test.init,main.compile">
@@ -97,7 +98,7 @@
     <exec basedir="tools\nunit\bin\net-2.0"
           program="nunit-console.exe"
           workingdir="${build.path}/test"
-          commandline="W3CValidators.Test.dll" />
+          commandline="W3CValidators.Test.dll /xml=../results/test/main.test.xml" />
   </target>
 
   <target name="testsupport.test.compile" depends="test.init,testsupport.compile">
@@ -129,7 +130,7 @@
     <exec basedir="tools\nunit\bin\net-2.0"
           program="nunit-console.exe"
           workingdir="${build.path}/test"
-          commandline="W3CValidators.NUnit.Test.dll" />
+          commandline="W3CValidators.NUnit.Test.dll /xml=../results/test/testsupport.test.xml" />
   </target>
 
 </project>
