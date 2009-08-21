@@ -49,23 +49,26 @@ namespace W3CValidators.NUnit
 
         private MarkupValidatorResponse GetResponse(object actual)
         {
-            if (actual is Uri)
-                return this.Check((Uri)actual);
-            if (actual is byte[])
-                return this._client.CheckByUpload((byte[])actual, null);
-            if (actual is string)
+            var uri = actual as Uri;
+            if (uri != null)
+                return this.Check(uri);
+            var bytes = actual as byte[];
+            if (bytes != null)
+                return this._client.CheckByUpload(bytes, null);
+            var str = actual as string;
+            if (str != null)
             {
-                if ((this._options & ValidationOptions.DontConvertStringToUri) == ValidationOptions.DontConvertStringToUri)
-                    return this._client.CheckByFragment((string)actual, null);
+                if ((this._options & ValidationOptions.DoNotConvertStringToUri) == ValidationOptions.DoNotConvertStringToUri)
+                    return this._client.CheckByFragment(str, null);
 
                 try
                 {
-                    var uri = new Uri((string)actual);
-                    return this.Check(uri);
+                    var convertedUri = new Uri(str);
+                    return this.Check(convertedUri);
                 }
                 catch (UriFormatException)
                 {
-                    return this._client.CheckByFragment((string)actual, null);
+                    return this._client.CheckByFragment(str, null);
                 }
             }
 

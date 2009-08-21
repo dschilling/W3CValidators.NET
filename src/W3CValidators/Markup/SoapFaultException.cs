@@ -1,10 +1,12 @@
 namespace W3CValidators.Markup
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Thrown when the validator service sends us a soap fault message.
     /// </summary>
+    [Serializable]
     public class SoapFaultException : Exception
     {
         private readonly string _reason;
@@ -19,6 +21,17 @@ namespace W3CValidators.Markup
             _reason = reason;
             _messageId = messageId;
             _errorDetail = errorDetail;
+        }
+
+        protected SoapFaultException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info");
+
+            _reason = info.GetString("Reason");
+            _messageId = info.GetString("MessageId");
+            _errorDetail = info.GetString("ErrorDetail");
         }
 
         /// <summary>
@@ -57,6 +70,18 @@ namespace W3CValidators.Markup
                     "MessageId: ", MessageId, Environment.NewLine,
                     "ErrorDetail: ", ErrorDetail);
             }
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info");
+
+            info.AddValue("Reason", _reason);
+            info.AddValue("MessageId", _messageId);
+            info.AddValue("ErrorDetail", _errorDetail);
+
+            base.GetObjectData(info, context);
         }
     }
 }

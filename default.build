@@ -161,12 +161,12 @@
       <exec basedir="${fxcop.path}"
             program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /console" />
+            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
     </if>
     <if test="${not property::exists('fxcop.path')}">
       <exec program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /console" />
+            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
     </if>
   </target>
 

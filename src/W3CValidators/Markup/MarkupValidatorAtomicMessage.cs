@@ -2,6 +2,7 @@
 
 namespace W3CValidators.Markup
 {
+    using System;
     using System.Xml;
 
     /// <summary>
@@ -67,10 +68,17 @@ namespace W3CValidators.Markup
         /// <summary>
         /// Creates a succinct string describing the problem.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("Line: {0}; Col: {1}; Message: {2}; Source: {3};", Line, Col, Message, Source);
+            return this.ToString(null);
+        }
+
+        /// <summary>
+        /// Creates a succinct string describing the problem.
+        /// </summary>
+        public string ToString(IFormatProvider provider)
+        {
+            return string.Format(provider, "Line: {0}; Col: {1}; Message: {2}; Source: {3};", Line, Col, Message, Source);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2009 Daniel A. Schilling
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -38,3 +39,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("0.2.0.0")]
 
 [assembly: CLSCompliant(true)]
+
+[module: SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Validators")]
+[module: SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Scope = "namespace", Target = "W3CValidators.NUnit", MessageId = "Validators")]

@@ -13,7 +13,7 @@ namespace W3CValidators.NUnit
         /// by the uri method (not the upload method), and strings that contain valid uri's will
         /// be converted into uri's.
         /// </summary>
-        Normal = 0,
+        None = 0,
 
         /// <summary>
         /// Indicates that the uri will probably not be accessible to the validator (maybe it's on
@@ -26,6 +26,6 @@ namespace W3CValidators.NUnit
         /// If a string is supplied that can be converted to a uri, interpret it as a uri instead
         /// of document data.
         /// </summary>
-        DontConvertStringToUri = 2
+        DoNotConvertStringToUri = 2
     }
 }

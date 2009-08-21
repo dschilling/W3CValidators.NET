@@ -12,7 +12,7 @@ namespace W3CValidators.NUnit
         /// </summary>
         public static Constraint Markup()
         {
-            return new MarkupConstraint(ValidationOptions.Normal);
+            return new MarkupConstraint(ValidationOptions.None);
         }
 
         /// <summary>

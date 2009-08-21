@@ -27,7 +27,7 @@ namespace W3CValidators.NUnit.Test
         public void Constraint_Should_Not_Convert_String_If_Asked_Not_To()
         {
             Assert.That(() =>
-                Assert.That(ValidXhtmlUrl, IsValid.Markup(ValidationOptions.DontConvertStringToUri)),
+                Assert.That(ValidXhtmlUrl, IsValid.Markup(ValidationOptions.DoNotConvertStringToUri)),
             Throws.InstanceOf<AssertionException>());
         }
 
