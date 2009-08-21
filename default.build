@@ -147,12 +147,12 @@
       <exec basedir="${fxcop.path}"
             program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml" />
+            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml /forceoutput" />
     </if>
     <if test="${not property::exists('fxcop.path')}">
       <exec program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml" />
+            commandline="/file:W3CValidators.dll /out:results/fxcop/main.fxcop.xml /forceoutput" />
     </if>
   </target>
 
@@ -161,12 +161,12 @@
       <exec basedir="${fxcop.path}"
             program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
+	    commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /forceoutput" />
     </if>
     <if test="${not property::exists('fxcop.path')}">
       <exec program="FxCopCmd.exe"
             workingdir="${build.path}"
-            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml" />
+            commandline="/file:W3CValidators.NUnit.dll /out:results/fxcop/testsupport.fxcop.xml /forceoutput" />
     </if>
   </target>
 
