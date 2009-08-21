@@ -4,4 +4,4 @@ src/*.resharper.user
 src/_ReSharper.*/
 src/*/bin/
 src/*/obj/
-bin/
+build/

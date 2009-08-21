@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Copyright (c) 2009 Daniel A. Schilling -->
-<project name="W3CValidators.NET" default="build">
+<project name="W3CValidators.NET" default="all"
+         xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
 
-	<description>.NET library for interacting with the W3C Validators (Markup, CSS, and Feed), and for doing so within unit tests</description>
+  <property name="debug" value="true" overwrite="false"/>
+  <property name="target" value="Release"/>
+  <property name="target" value="Debug" overwrite="true" if="${debug}"/>
+  <property name="build.path" value="build/${target}"/>
 
-	<target name="build" />
-		
+  <target name="all" depends="compile,test" />
+  
+  <target name="clean">
+    <delete dir="build" if="${directory::exists('build')}" />
+  </target>
+
+  <target name="init">
+    <mkdir dir="${build.path}" />
+  </target>
+
+  <target name="compile" depends="main.compile" />
+
+  <target name="main.compile" depends="init">
+    <csc output="${build.path}/W3CValidators.dll"
+         target="library"
+         debug="${debug}"
+         keyfile="src/W3CValidators/W3CValidators.snk"
+         doc="${build.path}/W3CValidators.xml">
+      <references>
+        <include name="System.dll"/>
+        <include name="System.Web.dll"/>
+      </references>
+      <sources>
+        <include name="src/W3CValidators/**/*.cs"/>
+      </sources>
+    </csc>
+  </target>
+
+  <target name="test" depends="main.test" />
+
+  <target name="test.init" depends="init">
+    <mkdir dir="${build.path}/test" />
+  </target>
+
+  <target name="main.test.compile" depends="test.init,main.compile">
+    <csc output="${build.path}/test/W3CValidators.Test.dll"
+         target="library"
+         debug="${debug}">
+      <references>
+        <include name="System.dll"/>
+        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
+        <include name="${build.path}/W3CValidators.dll"/>
+      </references>
+      <sources>
+        <include name="src/W3CValidators.Test/**/*.cs"/>
+      </sources>
+    </csc>
+
+    <copy todir="${build.path}/test" flatten="true">
+      <fileset>
+        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
+        <include name="${build.path}/W3CValidators.dll"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="main.test" depends="main.test.compile">
+    <exec basedir="tools\nunit\bin\net-2.0"
+          program="nunit-console.exe"
+          workingdir="${build.path}/test"
+          commandline="W3CValidators.Test.dll" />
+  </target>
+
 </project>
