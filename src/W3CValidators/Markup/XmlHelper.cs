@@ -5,7 +5,6 @@ namespace W3CValidators.Markup
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
-    using System.IO;
     using System.Text;
     using System.Xml;
 
@@ -13,7 +12,7 @@ namespace W3CValidators.Markup
     /// The base class for MarkupValidatorResponse, MarkupValidatorAtomicMessageList, and
     /// MarkupValidatorAtomicMessage.  Exists to make parsing the SOAP response easier.
     /// </summary>
-    public abstract class MarkupValidatorResponseBase
+    internal class XmlHelper
     {
         private readonly XmlNode _node;
         private readonly XmlNamespaceManager _nsmgr;
@@ -33,7 +32,7 @@ namespace W3CValidators.Markup
         /// <param name="namespaceAlias">
         /// The xml namespace alias that corresponds to http://www.w3.org/2005/10/markup-validator.
         /// </param>
-        internal protected MarkupValidatorResponseBase(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias)
+        internal XmlHelper(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias)
         {
             _node = node;
             _nsmgr = namespaceManager;
@@ -41,47 +40,11 @@ namespace W3CValidators.Markup
         }
 
         /// <summary>
-        /// Constructs a new MarkupValidationResponseBase.  Used by MarkupValidationResponse.
-        /// </summary>
-        /// <param name="stream">The stream to read the SOAP response from.</param>
-        internal protected MarkupValidatorResponseBase(Stream stream)
-        {
-            var doc = new XmlDocument();
-            var soapAlias = "e";
-            _namespaceAlias = "m";
-            _nsmgr = new XmlNamespaceManager(doc.NameTable);
-            _nsmgr.AddNamespace(soapAlias, "http://www.w3.org/2003/05/soap-envelope");
-            _nsmgr.AddNamespace(_namespaceAlias, "http://www.w3.org/2005/10/markup-validator");
-
-            doc.Load(stream);
-
-            var faultNode = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", soapAlias, ":Fault"), _nsmgr);
-            if (faultNode != null)
-                throw CreateFaultException(faultNode, _nsmgr, soapAlias, _namespaceAlias);
-
-            _node = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", _namespaceAlias, ":markupvalidationresponse"), _nsmgr);
-        }
-
-        private static SoapFaultException CreateFaultException(XmlNode node, XmlNamespaceManager namespaceManager, string soapAlias, string validatorAlias)
-        {
-            var reasonNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Reason/", soapAlias, ":Text"), namespaceManager);
-            var reason = reasonNode != null ? reasonNode.InnerText : null;
-
-            var messageIdNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":messageid"), namespaceManager);
-            var messageId = messageIdNode != null ? messageIdNode.InnerText : null;
-
-            var errorDetailNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":errordetail"), namespaceManager);
-            var errorDetail = errorDetailNode != null ? errorDetailNode.InnerText : null;
-
-            return new SoapFaultException(reason, messageId, errorDetail);
-        }
-
-        /// <summary>
         /// The root node of this element.  This might be a &lt;m:markupvalidationresponse&gt;
         /// tag, a &lt;m:errors&gt; tag, a &lt;m:error&gt; tag,  a &lt;m:warnings&gt; tag, or a
         /// &lt;m:warning&gt; tag.
         /// </summary>
-        internal protected XmlNode Node
+        internal XmlNode Node
         {
             get { return _node; }
         }
@@ -89,7 +52,7 @@ namespace W3CValidators.Markup
         /// <summary>
         /// The namespace manager that is used to navigate this xml document.
         /// </summary>
-        internal protected XmlNamespaceManager NamespaceManager
+        internal XmlNamespaceManager NamespaceManager
         {
             get { return _nsmgr; }
         }
@@ -97,7 +60,7 @@ namespace W3CValidators.Markup
         /// <summary>
         /// The xml namespace alias that corresponds to http://www.w3.org/2005/10/markup-validator.
         /// </summary>
-        internal protected string NamespaceAlias
+        internal string NamespaceAlias
         {
             get { return _namespaceAlias; }
         }
@@ -107,7 +70,7 @@ namespace W3CValidators.Markup
         /// </summary>
         /// <param name="name">The tag to get the value of.</param>
         /// <returns>a string, or null if empty</returns>
-        internal protected string this[string name]
+        internal string this[string name]
         {
             get
             {
@@ -124,7 +87,7 @@ namespace W3CValidators.Markup
         /// <param name="name">The tag to get the value of.</param>
         /// <returns>a Uri, or null if empty</returns>
         /// <exception cref="T:System.UriFormatException"/>
-        internal protected Uri GetUri(string name)
+        internal Uri GetUri(string name)
         {
             var value = this[name];
             if (value == null)
@@ -138,7 +101,7 @@ namespace W3CValidators.Markup
         /// <param name="name">The tag to get the value of.</param>
         /// <returns>an Encoding, or null if empty</returns>
         /// <exception cref="T:System.ArgumentException"/>
-        internal protected Encoding GetEncoding(string name)
+        internal Encoding GetEncoding(string name)
         {
             var value = this[name];
             if (value == null)
@@ -154,7 +117,7 @@ namespace W3CValidators.Markup
         /// <exception cref="T:System.ArgumentNullException"/>
         /// <exception cref="T:System.FormatException"/>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "bool")]
-        internal protected bool GetBool(string name)
+        internal bool GetBool(string name)
         {
             var value = this[name];
             return bool.Parse(value);
@@ -168,7 +131,7 @@ namespace W3CValidators.Markup
         /// <exception cref="T:System.ArgumentNullException"/>
         /// <exception cref="T:System.FormatException"/>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "int")]
-        internal protected int GetInt(string name)
+        internal int GetInt(string name)
         {
             var value = this[name];
             return int.Parse(value, CultureInfo.InvariantCulture);

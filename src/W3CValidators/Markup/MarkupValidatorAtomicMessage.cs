@@ -8,11 +8,14 @@ namespace W3CValidators.Markup
     /// <summary>
     /// A single error or warning.
     /// </summary>
-    public class MarkupValidatorAtomicMessage : MarkupValidatorResponseBase
+    public class MarkupValidatorAtomicMessage
     {
+        private readonly XmlHelper _helper;
+
         internal MarkupValidatorAtomicMessage(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias)
-            : base(node, namespaceManager, namespaceAlias)
-        {}
+        {
+            _helper = new XmlHelper(node, namespaceManager, namespaceAlias);
+        }
 
         /// <summary>
         /// Within the source code of the validated document, refers to the line where the error or
@@ -20,7 +23,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public int Line
         {
-            get { return this.GetInt("line"); }
+            get { return _helper.GetInt("line"); }
         }
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public int Col
         {
-            get { return this.GetInt("col"); }
+            get { return _helper.GetInt("col"); }
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public string Message
         {
-            get { return this["message"]; }
+            get { return _helper["message"]; }
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public string MessageId
         {
-            get { return this["messageid"]; }
+            get { return _helper["messageid"]; }
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public string Explanation
         {
-            get { return this["explanation"]; }
+            get { return _helper["explanation"]; }
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public string Source
         {
-            get { return this["source"]; }
+            get { return _helper["source"]; }
         }
 
         /// <summary>

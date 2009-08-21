@@ -7,37 +7,39 @@ namespace W3CValidators.Markup
     using System.Collections.Generic;
     using System.Xml;
 
-    internal class MarkupValidatorAtomicMessageList : MarkupValidatorResponseBase, IList<MarkupValidatorAtomicMessage>
+    internal class MarkupValidatorAtomicMessageList : IList<MarkupValidatorAtomicMessage>
     {
+        private readonly XmlHelper _helper;
         private readonly string _type;
         private readonly MarkupValidatorAtomicMessage[] _array;
 
         internal MarkupValidatorAtomicMessageList(XmlNode node, XmlNamespaceManager namespaceManager, string namespaceAlias, string type)
-            : base(node, namespaceManager, namespaceAlias)
         {
+            _helper = new XmlHelper(node, namespaceManager, namespaceAlias);
+
             _type = type;
 
-            if (this.Node == null)
+            if (_helper.Node == null)
             {
                 _array = new MarkupValidatorAtomicMessage[0];
                 return;
             }
 
-            var countStr = this[string.Concat(_type, "count")];
+            var countStr = _helper[string.Concat(_type, "count")];
             int count;
             if (!int.TryParse(countStr, out count))
                 count = 0;
 
             _array = new MarkupValidatorAtomicMessage[count];
 
-            var messageNodes = this.Node.SelectNodes(string.Concat("child::", this.NamespaceAlias, ":", _type, "list/", this.NamespaceAlias, ":", _type), this.NamespaceManager);
+            var messageNodes = _helper.Node.SelectNodes(string.Concat("child::", _helper.NamespaceAlias, ":", _type, "list/", _helper.NamespaceAlias, ":", _type), _helper.NamespaceManager);
             if (messageNodes == null)
                 return;
 
             var i = 0;
             foreach (XmlNode messageNode in messageNodes)
             {
-                this._array[i] = new MarkupValidatorAtomicMessage(messageNode, this.NamespaceManager, this.NamespaceAlias);
+                this._array[i] = new MarkupValidatorAtomicMessage(messageNode, _helper.NamespaceManager, _helper.NamespaceAlias);
                 i++;
             }
         }

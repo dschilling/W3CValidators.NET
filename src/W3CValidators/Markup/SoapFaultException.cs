@@ -1,12 +1,15 @@
 namespace W3CValidators.Markup
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Thrown when the validator service sends us a soap fault message.
     /// </summary>
     [Serializable]
+    [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
     public class SoapFaultException : Exception
     {
         private readonly string _reason;
@@ -23,6 +26,9 @@ namespace W3CValidators.Markup
             _errorDetail = errorDetail;
         }
 
+        /// <summary>
+        /// Creates a new SoapFaultException by deserialization.
+        /// </summary>
         protected SoapFaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -72,6 +78,10 @@ namespace W3CValidators.Markup
             }
         }
 
+        /// <summary>
+        /// Serialize this exception.
+        /// </summary>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)

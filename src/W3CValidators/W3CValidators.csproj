@@ -45,9 +45,9 @@
     <Compile Include="Markup\MarkupValidatorClient.cs" />
     <Compile Include="Markup\MarkupValidatorOptions.cs" />
     <Compile Include="Markup\MarkupValidatorResponse.cs" />
-    <Compile Include="Markup\MarkupValidatorResponseBase.cs" />
     <Compile Include="Markup\MultipartFormDataWriter.cs" />
     <Compile Include="Markup\SoapFaultException.cs" />
+    <Compile Include="Markup\XmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

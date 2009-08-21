@@ -12,8 +12,9 @@ namespace W3CValidators.Markup
     /// <summary>
     /// A response from the validator service.
     /// </summary>
-    public class MarkupValidatorResponse : MarkupValidatorResponseBase
+    public class MarkupValidatorResponse
     {
+        private readonly XmlHelper _helper;
         private readonly IList<MarkupValidatorAtomicMessage> _errors;
         private readonly IList<MarkupValidatorAtomicMessage> _warnings;
         private readonly IDictionary<string, string> _debug;
@@ -23,24 +24,56 @@ namespace W3CValidators.Markup
         /// </summary>
         /// <param name="stream"></param>
         public MarkupValidatorResponse(Stream stream)
-            : base(stream)
         {
+            var doc = new XmlDocument();
+            const string soapAlias = "e";
+            const string namespaceAlias = "m";
+            var nsmgr = new XmlNamespaceManager(doc.NameTable);
+            nsmgr.AddNamespace(soapAlias, "http://www.w3.org/2003/05/soap-envelope");
+            nsmgr.AddNamespace(namespaceAlias, "http://www.w3.org/2005/10/markup-validator");
+
+            doc.Load(stream);
+
+            var faultNode = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", soapAlias, ":Fault"), nsmgr);
+            if (faultNode != null)
+                throw CreateFaultException(faultNode, nsmgr, soapAlias, namespaceAlias);
+
+            var node = doc.SelectSingleNode(string.Concat("/", soapAlias, ":Envelope/", soapAlias, ":Body/", namespaceAlias, ":markupvalidationresponse"), nsmgr);
+
+            _helper = new XmlHelper(node, nsmgr, namespaceAlias);
+
+
             _errors = new MarkupValidatorAtomicMessageList(
-                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, ":errors"), this.NamespaceManager),
-                this.NamespaceManager,
-                NamespaceAlias,
+                _helper.Node.SelectSingleNode(string.Concat("child::", _helper.NamespaceAlias, ":errors"), _helper.NamespaceManager),
+                _helper.NamespaceManager,
+                _helper.NamespaceAlias,
                 "error");
             _warnings = new MarkupValidatorAtomicMessageList(
-                this.Node.SelectSingleNode(string.Concat("child::", NamespaceAlias, ":warnings"), this.NamespaceManager),
-                this.NamespaceManager,
-                NamespaceAlias,
+                _helper.Node.SelectSingleNode(string.Concat("child::", _helper.NamespaceAlias, ":warnings"), _helper.NamespaceManager),
+                _helper.NamespaceManager,
+                _helper.NamespaceAlias,
                 "warning");
             _debug = new Dictionary<string, string>();
-            var debugNodes = this.Node.SelectNodes(string.Concat("child::", NamespaceAlias, ":debug"), this.NamespaceManager);
-            foreach (XmlNode debugNode in debugNodes)
-            {
-                _debug.Add(debugNode.Attributes["name"].Value, debugNode.InnerText);
-            }
+            var debugNodes = _helper.Node.SelectNodes(string.Concat("child::", _helper.NamespaceAlias, ":debug"), _helper.NamespaceManager);
+            if (debugNodes != null)
+                foreach (XmlNode debugNode in debugNodes)
+                {
+                    _debug.Add(debugNode.Attributes["name"].Value, debugNode.InnerText);
+                }
+        }
+
+        private static SoapFaultException CreateFaultException(XmlNode node, XmlNamespaceManager namespaceManager, string soapAlias, string validatorAlias)
+        {
+            var reasonNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Reason/", soapAlias, ":Text"), namespaceManager);
+            var reason = reasonNode != null ? reasonNode.InnerText : null;
+
+            var messageIdNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":messageid"), namespaceManager);
+            var messageId = messageIdNode != null ? messageIdNode.InnerText : null;
+
+            var errorDetailNode = node.SelectSingleNode(string.Concat("child::", soapAlias, ":Detail/", validatorAlias, ":errordetail"), namespaceManager);
+            var errorDetail = errorDetailNode != null ? errorDetailNode.InnerText : null;
+
+            return new SoapFaultException(reason, messageId, errorDetail);
         }
 
         /// <summary>
@@ -48,7 +81,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public Uri Uri
         {
-            get { return this.GetUri("uri"); }
+            get { return _helper.GetUri("uri"); }
         }
 
         /// <summary>
@@ -56,7 +89,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public Uri CheckedBy
         {
-            get { return this.GetUri("checkedby"); }
+            get { return _helper.GetUri("checkedby"); }
         }
 
         /// <summary>
@@ -64,7 +97,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public string DocType
         {
-            get { return this["doctype"]; }
+            get { return _helper["doctype"]; }
         }
 
         /// <summary>
@@ -73,7 +106,7 @@ namespace W3CValidators.Markup
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Charset")]
         public Encoding Charset
         {
-            get { return GetEncoding("charset"); }
+            get { return _helper.GetEncoding("charset"); }
         }
 
         /// <summary>
@@ -81,7 +114,7 @@ namespace W3CValidators.Markup
         /// </summary>
         public bool Validity
         {
-            get { return GetBool("validity"); }
+            get { return _helper.GetBool("validity"); }
         }
 
         /// <summary>
