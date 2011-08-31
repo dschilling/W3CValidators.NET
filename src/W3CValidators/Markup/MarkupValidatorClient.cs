@@ -4,6 +4,7 @@ namespace W3CValidators.Markup
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Net;
     using System.Threading;
@@ -18,16 +19,28 @@ namespace W3CValidators.Markup
         /// The location of W3C's free public markup validator service.
         /// </summary>
         public static readonly Uri PublicValidator = new Uri("http://validator.w3.org/check");
+
+        public static Uri ConfiguredValidator
+        {
+            get
+            {
+                var configSection = (ValidatorConfigSection)ConfigurationManager.GetSection("w3cValidators");
+                return configSection == null
+                    ? PublicValidator
+                    : configSection.MarkupValidatorUri;
+            }
+        }
+
         private static readonly object ThrottleLock = new object();
 
         private readonly Uri _validator;
 
         /// <summary>
-        /// Creates a new MarkupValidatorClient instance pointing at W3C's public validator:
-        /// http://validator.w3.org/check.
+        /// Creates a new MarkupValidatorClient instance pointing at the validator specified in your
+        /// app.config file, defaulting to W3C's public validator: http://validator.w3.org/check.
         /// </summary>
         public MarkupValidatorClient()
-            : this(PublicValidator)
+            : this(ConfiguredValidator)
         {}
 
         /// <summary>

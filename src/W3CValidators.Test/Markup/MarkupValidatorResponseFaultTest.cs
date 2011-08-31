@@ -1,7 +1,7 @@
-namespace W3CValidators.Test
+namespace W3CValidators.Test.Markup
 {
-    using Markup;
-    using NUnit.Framework;
+    using W3CValidators.Markup;
+    using global::NUnit.Framework;
 
     [TestFixture]
     public class MarkupValidatorResponseFaultTest

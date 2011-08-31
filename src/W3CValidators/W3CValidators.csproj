@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -63,6 +64,7 @@
     <Compile Include="Markup\MarkupValidatorAtomicMessage.cs" />
     <Compile Include="Markup\MarkupValidatorAtomicMessageList.cs" />
     <Compile Include="Markup\MarkupValidatorClient.cs" />
+    <Compile Include="ValidatorConfigSection.cs" />
     <Compile Include="Markup\MarkupValidatorOptions.cs" />
     <Compile Include="Markup\MarkupValidatorResponse.cs" />
     <Compile Include="Markup\MultipartFormDataWriter.cs" />

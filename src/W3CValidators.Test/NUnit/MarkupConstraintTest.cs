@@ -1,9 +1,10 @@
-namespace W3CValidators.NUnit.Test
+namespace W3CValidators.Test.NUnit
 {
     using System;
     using System.IO;
     using global::NUnit.Framework;
-    using Markup;
+    using W3CValidators.Markup;
+    using W3CValidators.NUnit;
 
     [TestFixture]
     public class MarkupConstraintTest

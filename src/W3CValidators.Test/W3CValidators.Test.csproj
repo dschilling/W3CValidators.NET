@@ -58,12 +58,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarkupValidatorClientTest.cs" />
-    <Compile Include="MarkupValidatorResponseFaultTest.cs" />
-    <Compile Include="MarkupValidatorResponseTest.cs" />
+    <Compile Include="Markup\MarkupValidatorClientTest.cs" />
+    <Compile Include="Markup\MarkupValidatorResponseFaultTest.cs" />
+    <Compile Include="Markup\MarkupValidatorResponseTest.cs" />
+    <Compile Include="Markup\ThrottleTest.cs" />
+    <Compile Include="NUnit\MarkupConstraintTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\W3CValidators.NUnit\W3CValidators.NUnit.csproj">
+      <Project>{2C43C206-A71D-4025-A24B-CBF09906F19A}</Project>
+      <Name>W3CValidators.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\W3CValidators\W3CValidators.csproj">
       <Project>{7B7CDD8A-E541-4048-BB5B-439D2C05BE9C}</Project>
       <Name>W3CValidators</Name>
@@ -91,6 +97,15 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="validXhtml11.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

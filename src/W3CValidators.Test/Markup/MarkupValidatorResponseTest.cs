@@ -1,11 +1,11 @@
 // Copyright (c) 2009 Daniel A. Schilling
 
-namespace W3CValidators.Test
+namespace W3CValidators.Test.Markup
 {
     using System;
     using System.Text;
-    using Markup;
-    using NUnit.Framework;
+    using W3CValidators.Markup;
+    using global::NUnit.Framework;
 
     [TestFixture]
     public class MarkupValidatorResponseTest
