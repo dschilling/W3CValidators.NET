@@ -9,8 +9,6 @@
   <property name="build.path" value="build/${target}"/>
 
   <target name="all" depends="compile,test,fxcop" />
-  <target name="main" depends="main.compile,main.test,main.fxcop" />
-  <target name="testsupport" depends="testsupport.compile,testsupport.test,testsupport.fxcop" />
   
   <target name="clean">
     <delete dir="build" if="${directory::exists('build')}" />
@@ -64,14 +62,19 @@
     </copy>
   </target>
 
-  <target name="test" depends="main.test,testsupport.test" />
+  <target name="test" depends="test.compile">
+    <exec basedir="tools\nunit\bin\net-2.0"
+          program="nunit-console.exe"
+          workingdir="${build.path}/test"
+          commandline="W3CValidators.Test.dll /xml=../results/test/test.xml" />
+  </target>
 
   <target name="test.init" depends="init">
     <mkdir dir="${build.path}/test" />
     <mkdir dir="${build.path}/results/test" />
   </target>
 
-  <target name="main.test.compile" depends="test.init,main.compile">
+  <target name="test.compile" depends="test.init,main.compile,testsupport.compile">
     <csc output="${build.path}/test/W3CValidators.Test.dll"
          target="library"
          debug="${debug}">
@@ -79,6 +82,7 @@
         <include name="System.dll"/>
         <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
         <include name="${build.path}/W3CValidators.dll"/>
+        <include name="${build.path}/W3CValidators.NUnit.dll"/>
       </references>
       <resources prefix="W3CValidators.Test">
         <include name="src/W3CValidators.Test/response.xml"/>
@@ -93,49 +97,15 @@
       <fileset>
         <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
         <include name="${build.path}/W3CValidators.dll"/>
+        <include name="${build.path}/W3CValidators.NUnit.dll"/>
+        <include name="src/W3CValidators.Test/validXhtml11.html"/>
       </fileset>
     </copy>
+	
+	<copy file="src/W3CValidators.Test/App.config"
+	      tofile="${build.path}/test/W3CValidators.Test.config" />
   </target>
 
-  <target name="main.test" depends="main.test.compile">
-    <exec basedir="tools\nunit\bin\net-2.0"
-          program="nunit-console.exe"
-          workingdir="${build.path}/test"
-          commandline="W3CValidators.Test.dll /xml=../results/test/main.test.xml" />
-  </target>
-
-  <target name="testsupport.test.compile" depends="test.init,testsupport.compile">
-    <csc output="${build.path}/test/W3CValidators.NUnit.Test.dll"
-         target="library"
-         debug="${debug}">
-      <references>
-        <include name="System.dll"/>
-        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
-        <include name="${build.path}/W3CValidators.dll"/>
-        <include name="${build.path}/W3CValidators.NUnit.dll"/>
-      </references>
-      <sources>
-        <include name="src/W3CValidators.NUnit.Test/**/*.cs"/>
-      </sources>
-    </csc>
-
-    <copy todir="${build.path}/test" flatten="true">
-      <fileset>
-        <include name="tools/nunit/bin/net-2.0/framework/nunit.framework.dll"/>
-        <include name="${build.path}/W3CValidators.dll"/>
-        <include name="${build.path}/W3CValidators.NUnit.dll"/>
-        <include name="src/W3CValidators.NUnit.Test/validXhtml11.html"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="testsupport.test" depends="testsupport.test.compile">
-    <exec basedir="tools\nunit\bin\net-2.0"
-          program="nunit-console.exe"
-          workingdir="${build.path}/test"
-          commandline="W3CValidators.NUnit.Test.dll /xml=../results/test/testsupport.test.xml" />
-  </target>
-  
   <target name="fxcop" depends="main.fxcop,testsupport.fxcop" />
   
   <target name="fxcop.init" depends="init">
