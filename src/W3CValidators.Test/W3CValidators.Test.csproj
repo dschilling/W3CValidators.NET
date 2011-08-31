@@ -56,8 +56,12 @@
       <HintPath>..\..\tools\nunit\bin\net-2.0\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Markup\MarkupValidatorClientTest.cs" />
     <Compile Include="Markup\MarkupValidatorResponseFaultTest.cs" />
     <Compile Include="Markup\MarkupValidatorResponseTest.cs" />

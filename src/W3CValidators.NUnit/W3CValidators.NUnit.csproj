@@ -63,6 +63,9 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="IsValid.cs" />
     <Compile Include="MarkupConstraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

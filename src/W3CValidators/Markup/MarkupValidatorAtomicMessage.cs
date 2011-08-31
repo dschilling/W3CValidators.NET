@@ -1,4 +1,4 @@
-// Copyright (c) 2009 Daniel A. Schilling
+// Copyright (c) 2011 Daniel A. Schilling
 
 namespace W3CValidators.Markup
 {
